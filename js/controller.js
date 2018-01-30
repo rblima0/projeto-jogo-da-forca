@@ -1,20 +1,18 @@
-var criaController = function (jogo) {
+const criaController = jogo => {
 
-    var $entrada = $('#entrada');
-    var $lacunas = $('.lacunas');
+    const $entrada = $('#entrada');
+    const $lacunas = $('.lacunas');
 
-    var exibeLacunas = function () {
+    const exibeLacunas = function () {
         $lacunas.empty();
         jogo.getLacunas().forEach(function (lacuna) {
             $('<li>').addClass('lacuna').text(lacuna).appendTo($lacunas);
         });
     };
 
-    var mudaPlaceHolder = function (texto) {
-        $entrada.attr('placeholder', texto);
-    };
+    const mudaPlaceHolder = texto => $entrada.attr('placeholder', texto);
 
-    var guardaPalavraSecreta = function () {
+    const guardaPalavraSecreta = () => {
         try {
             jogo.setPalavraSecreta($entrada.val().trim());
             $entrada.val('');
@@ -23,23 +21,22 @@ var criaController = function (jogo) {
         } catch (error) {
             alert(error.message);
         }
-        
     };
 
-    var reinicia = function () {
+    const reinicia = () => {
         $lacunas.empty();
         mudaPlaceHolder('Palavra secreta');
         jogo.reinicia();
     };
 
-    var leChute = function () {
+    const leChute = () => {
         try {
             jogo.processaChute($entrada.val().trim().substr(0, 1));
             $entrada.val('');
             exibeLacunas();
 
             if (jogo.ganhouOuPerdeu()) {
-                setTimeout(function () {
+                setTimeout(() => {
                     if (jogo.ganhou()) {
                         alert('Você ganhou !!!');
                     } else if (jogo.perdeu()) {
@@ -54,11 +51,9 @@ var criaController = function (jogo) {
         }
     };
 
-    
+    const inicia = () => {
 
-    var inicia = function () {
-
-        $entrada.keypress(function (event) {
+        $entrada.keypress(event => {
             if (event.which == 13) {
                 switch (jogo.getEtapa()) {
                     case 1:
@@ -71,5 +66,5 @@ var criaController = function (jogo) {
             }
         });
     }
-    return { inicia: inicia };
+    return { inicia };
 };
